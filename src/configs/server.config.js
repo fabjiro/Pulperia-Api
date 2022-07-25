@@ -20,5 +20,6 @@ app.set("port", process.env.PORT || 3030);
 // register routes
 app.use("/api/categorie", routes.categorie);
 app.use("/api/product", routes.product);
+app.use("/api/state", routes.states);
 
 module.exports = app;

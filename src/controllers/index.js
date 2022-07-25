@@ -14,5 +14,9 @@ module.exports = {
       all: require("./routes/product/get.controller").all,
       id: require("./routes/product/get.controller").id,
     },
+    states: {
+      onChange: require("./state.controller").onChange,
+      get: require("./state.controller").get,
+    },
   },
 };

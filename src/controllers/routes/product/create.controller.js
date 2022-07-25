@@ -2,6 +2,7 @@ const { Product, Categorie } = require("../../../models");
 const { dropbox, sharp } = require("../../../helpers");
 const { unlinkSync } = require("fs");
 const SocketProductSend = require("../../socket/product.send");
+const state = require("../../state.controller");
 
 /** @type {import("express").RequestHandler} */
 module.exports = async (req, res) => {
@@ -38,12 +39,15 @@ module.exports = async (req, res) => {
     await register.save();
 
     SocketProductSend();
+    await state.onChange();
 
     return res.status(200).json({
       status: 200,
       smg: "great! :)",
       data: await Product.findById({ _id: register._id }).select([
         "-pictures.front.path",
+        "-createdAt",
+        "-updatedAt",
       ]),
     });
   } catch (error) {
