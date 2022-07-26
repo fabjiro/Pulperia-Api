@@ -1,5 +1,6 @@
 const { Categorie } = require("../../../models");
 const SocketCategorieSend = require("../../socket/categorie.send");
+const state = require("../../state.controller");
 
 /** @type {import("express").RequestHandler} */
 module.exports = async (req, res) => {
@@ -8,6 +9,7 @@ module.exports = async (req, res) => {
     await register.save();
 
     SocketCategorieSend(); // server emit to client
+    await state.onChange();
 
     return res.status(200).json({
       status: 200,

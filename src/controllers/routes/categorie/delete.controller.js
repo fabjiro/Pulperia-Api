@@ -1,6 +1,7 @@
 const { Categorie, Product } = require("../../../models");
 const { dropbox } = require("../../../helpers");
 const SocketCategorieSend = require("../../socket/categorie.send");
+const state = require("../../state.controller");
 
 /** @type {import("express").RequestHandler} */
 module.exports = async (req, res) => {
@@ -17,6 +18,7 @@ module.exports = async (req, res) => {
     await Categorie.findByIdAndDelete({ _id });
 
     SocketCategorieSend();
+    await state.onChange();
     return res.status(200).json({
       status: 200,
       smg: "great! :)",
