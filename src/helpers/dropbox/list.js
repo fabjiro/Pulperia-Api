@@ -1,8 +1,12 @@
 const dropbox = require("../../services/dropbox");
-const { parse } = require('path');
+const { parse } = require("path");
 
-module.exports = async (pathCloud = '') => {
-
+/**
+ *
+ * @param {String} pathCloud
+ * @returns {String[]}
+ */
+module.exports = async (pathCloud) => {
   if (parse(pathCloud).ext) {
     pathCloud = parse(pathCloud).dir;
   }
