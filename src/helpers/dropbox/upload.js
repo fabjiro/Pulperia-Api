@@ -4,7 +4,7 @@ const list = require("./list");
 const { createReadStream } = require("fs");
 
 module.exports = async (pathLocal, pathCloud) => {
-  // let list_file =  await list(pathCloud)
+  let list_file = await list(pathCloud);
 
   let response = await dropbox.instance.filesUpload({
     path: pathCloud,
