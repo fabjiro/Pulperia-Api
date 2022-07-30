@@ -17,9 +17,13 @@ app.use(express.urlencoded({ extended: true }));
 // configs
 app.set("port", process.env.PORT || 3030);
 
-// register routes
-app.use("/api/categorie", routes.categorie);
-app.use("/api/product", routes.product);
-app.use("/api/state", routes.states);
+// register routes api
+app.use("/api/categorie", routes.api.categorie);
+app.use("/api/product", routes.api.product);
+app.use("/api/state", routes.api.states);
+app.use("/api/user", routes.api.users);
+
+// register routes auth
+app.use("/auth/login", routes.auth.login);
 
 module.exports = app;

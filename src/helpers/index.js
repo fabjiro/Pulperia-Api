@@ -7,4 +7,5 @@ module.exports = {
     list: require("./dropbox/list"),
   },
   sharp: require("./sharp"),
+  tokenweb: require("./tokenweb"),
 };

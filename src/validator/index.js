@@ -8,5 +8,8 @@ module.exports = {
     product: {
       create: require("./routes/product/create.validator"),
     },
+    user: {
+      create: require("./routes/user/create.validator")
+    }
   },
 };

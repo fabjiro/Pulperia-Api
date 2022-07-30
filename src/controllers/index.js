@@ -1,22 +1,31 @@
 module.exports = {
-  routes: {
+  api: {
     categorie: {
-      create: require("./routes/categorie/create.controller"),
-      edit: require("./routes/categorie/update.controller"),
-      delete: require("./routes/categorie/delete.controller"),
-      all: require("./routes/categorie/get.controller").all,
-      id: require("./routes/categorie/get.controller").id,
-      product: require("./routes/categorie/get.controller").product,
+      create: require("./api/categorie/create.controller"),
+      edit: require("./api/categorie/update.controller"),
+      delete: require("./api/categorie/delete.controller"),
+      all: require("./api/categorie/get.controller").all,
+      id: require("./api/categorie/get.controller").id,
+      product: require("./api/categorie/get.controller").product,
     },
     product: {
-      create: require("./routes/product/create.controller"),
-      delete: require("./routes/product/delete.cotroller"),
-      all: require("./routes/product/get.controller").all,
-      id: require("./routes/product/get.controller").id,
+      create: require("./api/product/create.controller"),
+      delete: require("./api/product/delete.cotroller"),
+      all: require("./api/product/get.controller").all,
+      id: require("./api/product/get.controller").id,
     },
     states: {
       onChange: require("./state.controller").onChange,
       get: require("./state.controller").get,
     },
+    users: {
+      create: require("./api/user/create.controller"),
+      all: require("./api/user/list").all,
+      id: require("./api/user/list").id,
+      update: require("./api/user/update")
+    }
   },
+  auth: {
+    login: require("./auth/login.controller")
+  }
 };
