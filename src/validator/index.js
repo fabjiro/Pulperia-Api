@@ -9,7 +9,11 @@ module.exports = {
       create: require("./routes/product/create.validator"),
     },
     user: {
-      create: require("./routes/user/create.validator")
-    }
+      create: require("./routes/user/create.validator"),
+    },
+    store: {
+      pushproduct: require("./routes/store/pushproduct.validator"),
+      create: require("./routes/store/create.validator"),
+    },
   },
 };

@@ -14,5 +14,4 @@ module.exports = multer({
       cb(null, `${crypto.randomUUID() + path.extname(file.originalname)}`);
     },
   }),
-  limits: 1,
 });

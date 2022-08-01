@@ -3,6 +3,7 @@ module.exports = {
   dropbox: {
     upload: require("./dropbox/upload"),
     shared: require("./dropbox/sharedlink"),
+    createfolder: require("./dropbox/createfolder"),
     delete: require("./dropbox/delete"),
     list: require("./dropbox/list"),
   },

@@ -22,10 +22,17 @@ module.exports = {
       create: require("./api/user/create.controller"),
       all: require("./api/user/list").all,
       id: require("./api/user/list").id,
-      update: require("./api/user/update")
-    }
+      update: require("./api/user/update"),
+    },
+    store: {
+      all: require("./api/store/list.controller").all,
+      id: require("./api/store/list.controller").id,
+      categories: require("./api/store/list.controller").categories,
+      create: require("./api/store/create.controller"),
+      pushproduct: require("./api/store/push.controller"),
+    },
   },
   auth: {
-    login: require("./auth/login.controller")
-  }
+    login: require("./auth/login.controller"),
+  },
 };

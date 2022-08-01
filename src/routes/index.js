@@ -4,8 +4,9 @@ module.exports = {
     product: require("./api/product.route"),
     states: require("./api/state.route"),
     users: require("./api/user.route"),
+    store: require("./api/store.route"),
   },
   auth: {
-   login: require("./auth/login.route"),
-  }
+    login: require("./auth/login.route"),
+  },
 };

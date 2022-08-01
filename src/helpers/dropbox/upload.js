@@ -9,7 +9,6 @@ const { randomUUID } = require("crypto");
  *
  * @param {String} pathLocal
  * @param {String} pathCloud
- * @returns {Object}
  */
 module.exports = async (pathLocal, pathCloud) => {
   let list_file = await list(pathCloud);

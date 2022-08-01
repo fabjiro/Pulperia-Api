@@ -22,6 +22,7 @@ app.use("/api/categorie", routes.api.categorie);
 app.use("/api/product", routes.api.product);
 app.use("/api/state", routes.api.states);
 app.use("/api/user", routes.api.users);
+app.use("/api/store", routes.api.store);
 
 // register routes auth
 app.use("/auth/login", routes.auth.login);
