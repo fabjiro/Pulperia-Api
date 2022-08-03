@@ -1,6 +1,7 @@
 module.exports = {
   validatorResult: require("./validator.helper"),
   dropbox: {
+    move: require("./dropbox/move"),
     upload: require("./dropbox/upload"),
     shared: require("./dropbox/sharedlink"),
     createfolder: require("./dropbox/createfolder"),

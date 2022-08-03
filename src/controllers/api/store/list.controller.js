@@ -1,4 +1,4 @@
-const { Store, Categorie } = require("../../../models");
+const { Store, User } = require("../../../models");
 
 /** @type {import("express").RequestHandler} */
 exports.all = async (req, res) => {
@@ -6,6 +6,7 @@ exports.all = async (req, res) => {
     "-createdAt",
     "-updatedAt",
     "-pictures.path",
+    "-pictures._id",
   ]);
 
   if (registers.length > 0) {
@@ -31,6 +32,7 @@ exports.id = async (req, res) => {
     "-createdAt",
     "-updatedAt",
     "-pictures.path",
+    "-pictures._id",
   ]);
 
   if (register) {
@@ -48,45 +50,33 @@ exports.id = async (req, res) => {
 };
 
 /** @type {import("express").RequestHandler} */
-exports.categories = async (req, res) => {
-  let { _id, param } = req.params;
+exports.owner = async (req, res) => {
+  let { _id } = req.params;
+  if (await User.exists({ _id })) {
+    let register = await Store.find({ owner: _id }).select([
+      "-createdAt",
+      "-updatedAt",
+      "-pictures.path",
+      "-pictures._id",
+    ]);
 
-  let reg_store = await Store.findById({ _id }).select([
-    "-createdAt",
-    "-updatedAt",
-    "-pictures.path",
-  ]);
-
-  if (reg_store) {
-    if (param) {
-      if (param == "verbose") {
-        let tem_data = [];
-        for (let item in reg_store.inventory) {
-          tem_data.push(
-            await Categorie.findById({ _id: item.Categorie }).select([
-              "-createdAt",
-              "-updatedAt",
-            ])
-          );
-        }
-
-        return res.status(200).json({
-          status: 200,
-          smg: "great :)",
-          data: tem_data,
-          length: tem_data.length,
-        });
-      }
+    if (register.length > 0) {
+      return res.status(200).json({
+        status: 200,
+        smg: "great :)",
+        data: register,
+        length: register.length,
+      });
     }
-    return res.status(200).json({
-      status: 200,
-      smg: "great :)",
-      data: reg_store,
+
+    return res.status(403).json({
+      status: 403,
+      smg: "no store avalaible",
     });
   }
 
   return res.status(403).json({
     status: 403,
-    smg: "register not avalaible",
+    smg: "owner not avalaible",
   });
 };

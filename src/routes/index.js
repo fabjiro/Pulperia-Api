@@ -5,6 +5,7 @@ module.exports = {
     states: require("./api/state.route"),
     users: require("./api/user.route"),
     store: require("./api/store.route"),
+    image: require("./api/images.route"),
   },
   auth: {
     login: require("./auth/login.route"),

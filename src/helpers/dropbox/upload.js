@@ -24,7 +24,6 @@ module.exports = async (pathLocal, pathCloud) => {
   });
 
   return {
-    name: response["result"]["name"],
     path: response["result"]["path_display"],
     link: await sharedlink(pathCloud),
   };

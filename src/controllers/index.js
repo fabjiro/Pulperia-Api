@@ -27,10 +27,15 @@ module.exports = {
     store: {
       all: require("./api/store/list.controller").all,
       id: require("./api/store/list.controller").id,
+      owner: require("./api/store/list.controller").owner,
       categories: require("./api/store/list.controller").categories,
       create: require("./api/store/create.controller"),
-      pushproduct: require("./api/store/push.controller"),
+      pushproduct: require("./api/store/push.controller").products,
+      pushcategorie: require("./api/store/push.controller").categorie,
+      inventory: require("./api/store/inventory.controller"),
+      delete: require("./api/store/delete.controller"),
     },
+    images: require("./api/image.controller"),
   },
   auth: {
     login: require("./auth/login.controller"),

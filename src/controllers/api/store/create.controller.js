@@ -1,15 +1,10 @@
 const { Store } = require("../../../models");
-const { dropbox, sharp } = require("../../../helpers");
-const { unlinkSync } = require("fs");
+const { dropbox } = require("../../../helpers");
+const { parse } = require("path");
 
 /** @type {import("express").RequestHandler} */
 module.exports = async (req, res) => {
-  let { name, owner, location, inventory } = req.body;
-  let galery = req.files;
-  let galery_links = [];
-
-  location = JSON.parse(location);
-  inventory = JSON.parse(inventory);
+  let { name, owner, location, inventory, galery } = req.body;
 
   let register = new Store({
     name,
@@ -20,30 +15,27 @@ module.exports = async (req, res) => {
 
   await dropbox.createfolder(`/pulperia_v2/store/${register._id}`);
 
-  for (let item in galery) {
-    item = galery[item];
-
-    await sharp(item);
-    let tem_dat = await dropbox.upload(
-      item.path,
-      `/pulperia_v2/store/${register._id}/${item.filename}`
+  for (let i = 0; i < galery.length; i++) {
+    await dropbox.move(
+      galery[i].path,
+      `/pulperia_v2/store/${register._id}/${parse(galery[i].path).base}`
     );
-
-    unlinkSync(item.path);
-
-    galery_links.push({
-      link: tem_dat.link,
-      path: tem_dat.path,
-    });
+    galery[i].path = `/pulperia_v2/store/${register._id}/${
+      parse(galery[i].path).base
+    }`;
   }
 
-  register.pictures = galery_links;
-
+  register.pictures = galery;
   await register.save();
 
   return res.status(200).json({
     status: 200,
     smg: "great :)",
-    data: register,
+    data: await Store.findById({ _id: register._id }).select([
+      "-createdAt",
+      "-updatedAt",
+      "-pictures.path",
+      "-pictures._id",
+    ]),
   });
 };
