@@ -2,12 +2,12 @@ const { States } = require("../models");
 const crypto = require("crypto");
 
 const onChange = async () => {
-  await States.findByIdAndUpdate(
-    { _id: "62dec56574993ed21da93afa" },
-    {
-      datas: crypto.randomUUID(),
-    }
-  );
+  let register = await States.findOne({ _id: "62dec56574993ed21da93afa" });
+
+  let newUuid = crypto.randomUUID();
+  while (register.datas == newUuid) newUuid = crypto.randomUUID();
+  register.datas = newUuid;
+  await register.save();
 };
 
 /** @type {import("express").RequestHandler} */

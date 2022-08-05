@@ -7,7 +7,7 @@ router.get("/", controller.api.categorie.all);
 
 router.get(
   "/:_id/products",
-  middleware.auth,
+  // middleware.auth,
   validator.routes.id,
   controller.api.categorie.product
 );
