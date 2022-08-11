@@ -1,41 +1,62 @@
 const { Store } = require("../../../models");
-const { dropbox } = require("../../../helpers");
+const { dropbox, tokenweb } = require("../../../helpers");
 const { parse } = require("path");
+
+/*
+{
+  location: {$near:{$geometry:{type: "Point", coordinates:[-87.028326,12.567568]},$maxDistance:100}}
+}
+*/
 
 /** @type {import("express").RequestHandler} */
 module.exports = async (req, res) => {
-  let { name, owner, location, inventory, galery } = req.body;
+  try {
+    let { name, location, inventory, galery } = req.body;
+    let { authorization } = req.headers;
+    let tokenData = tokenweb.verify(authorization.split(" ").pop());
 
-  let register = new Store({
-    name,
-    owner,
-    location,
-    inventory,
-  });
+    let register = new Store({
+      name,
+      inventory,
+      location: {
+        type: "Point",
+        coordinates: [location.latitude, location.longitude],
+      },
+      owner: tokenData._id,
+    });
 
-  await dropbox.createfolder(`/pulperia_v2/store/${register._id}`);
+    await dropbox.createfolder(`/pulperia_v2/store/${register._id}`);
 
-  for (let i = 0; i < galery.length; i++) {
-    await dropbox.move(
-      galery[i].path,
-      `/pulperia_v2/store/${register._id}/${parse(galery[i].path).base}`
-    );
-    galery[i].path = `/pulperia_v2/store/${register._id}/${
-      parse(galery[i].path).base
-    }`;
+    if (galery) {
+      for (let i = 0; i < galery.length; i++) {
+        await dropbox.move(
+          galery[i].path,
+          `/pulperia_v2/store/${register._id}/${parse(galery[i].path).base}`
+        );
+        galery[i].path = `/pulperia_v2/store/${register._id}/${
+          parse(galery[i].path).base
+        }`;
+      }
+
+      register.pictures = galery;
+    }
+    await register.save();
+
+    return res.status(200).json({
+      status: 200,
+      smg: "great :)",
+      data: await Store.findById({ _id: register._id }).select([
+        "-createdAt",
+        "-updatedAt",
+        "-pictures.path",
+        "-pictures._id",
+      ]),
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(403).json({
+      status: 403,
+      error: error,
+    });
   }
-
-  register.pictures = galery;
-  await register.save();
-
-  return res.status(200).json({
-    status: 200,
-    smg: "great :)",
-    data: await Store.findById({ _id: register._id }).select([
-      "-createdAt",
-      "-updatedAt",
-      "-pictures.path",
-      "-pictures._id",
-    ]),
-  });
 };

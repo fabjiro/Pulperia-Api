@@ -23,7 +23,7 @@ app.use("/api/product", routes.api.product);
 app.use("/api/state", routes.api.states);
 app.use("/api/user", routes.api.users);
 app.use("/api/store", routes.api.store);
-app.use("/api/image", routes.api.image);
+app.use("/api/images", routes.api.image);
 
 // register routes auth
 app.use("/auth/login", routes.auth.login);

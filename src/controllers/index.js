@@ -30,7 +30,7 @@ module.exports = {
       owner: require("./api/store/list.controller").owner,
       categories: require("./api/store/list.controller").categories,
       create: require("./api/store/create.controller"),
-      pushproduct: require("./api/store/push.controller").products,
+      push: require("./api/store/push.controller"),
       pushcategorie: require("./api/store/push.controller").categorie,
       inventory: require("./api/store/inventory.controller"),
       delete: require("./api/store/delete.controller"),

@@ -45,19 +45,25 @@ router.delete(
 // delete product
 
 //push img to galery
+router.post(
+  "/:_id/galery",
+  middleware.role(["admin", "owner"]),
+  validator.routes.store.push.galery,
+  controller.api.store.push.galery
+);
 // push categorie to inventory
 router.post(
   "/:_id/categorie",
   middleware.role(["admin", "owner"]),
   validator.routes.id,
-  controller.api.store.pushcategorie
+  controller.api.store.push.categorie
 );
 // push product to categorie
 router.post(
   "/:_id/product/:categorie",
   middleware.role(["admin", "owner"]),
-  validator.routes.store.pushproduct,
-  controller.api.store.pushproduct
+  validator.routes.store.push.product,
+  controller.api.store.push.products
 );
 
 module.exports = router;

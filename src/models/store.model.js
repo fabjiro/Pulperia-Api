@@ -13,8 +13,15 @@ module.exports = mongoose.model(
         },
       ],
       location: {
-        latitude: String,
-        longitude: String,
+        type: {
+          type: String,
+          enum: ["Point"], // 'location.type' must be 'Point'
+          required: true,
+        },
+        coordinates: {
+          type: [Number],
+          required: true,
+        },
       },
       inventory: [
         {

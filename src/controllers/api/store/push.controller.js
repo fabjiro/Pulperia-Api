@@ -1,8 +1,10 @@
 const { Product, Store, Categorie } = require("../../../models");
+const { dropbox } = require("../../../helpers");
 const { ObjectId } = require("mongoose").mongo;
+const { parse } = require("path");
 
 /** @type {import("express").RequestHandler} */
-exports.products = async (req, res) => {
+const products = async (req, res) => {
   let { _id, categorie } = req.params;
   let { products } = req.body;
 
@@ -51,7 +53,7 @@ exports.products = async (req, res) => {
 };
 
 /** @type {import("express").RequestHandler} */
-exports.categorie = async (req, res) => {
+const categorie = async (req, res) => {
   let { _id } = req.params;
   let { products, categorie } = req.body;
 
@@ -104,4 +106,46 @@ exports.categorie = async (req, res) => {
     status: 403,
     smg: "store not avalaible",
   });
+};
+
+/** @type {import("express").RequestHandler} */
+const galery = async (req, res) => {
+  let { images } = req.body;
+  let { _id } = req.params;
+
+  let register = await Store.findById({ _id }).select([
+    "-createdAt",
+    "-updatedAt",
+    "-pictures.path",
+    "-pictures._id",
+  ]);
+
+  if (register) {
+    for (let i = 0; i < images.length; i++) {
+      let newpath = `/pulperia_v2/store/${register._id}/${
+        parse(images[i].path).base
+      }`;
+
+      await dropbox.move(images[i].path, newpath);
+      images[i].path = newpath;
+      register.pictures.push(images[i]);
+    }
+    await register.save();
+
+    return res.status(200).json({
+      status: 200,
+      smg: "great :)",
+      data: register,
+    });
+  }
+  return res.status(203).json({
+    status: 203,
+    smg: "store not avalaible",
+  });
+};
+
+module.exports = {
+  products,
+  categorie,
+  galery,
 };

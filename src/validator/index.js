@@ -12,7 +12,7 @@ module.exports = {
       create: require("./routes/user/create.validator"),
     },
     store: {
-      pushproduct: require("./routes/store/pushproduct.validator"),
+      push: require("./routes/store/push.validator"),
       create: require("./routes/store/create.validator"),
     },
   },
