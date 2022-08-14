@@ -2,12 +2,6 @@ const { Store } = require("../../../models");
 const { dropbox, tokenweb } = require("../../../helpers");
 const { parse } = require("path");
 
-/*
-{
-  location: {$near:{$geometry:{type: "Point", coordinates:[-87.028326,12.567568]},$maxDistance:100}}
-}
-*/
-
 /** @type {import("express").RequestHandler} */
 module.exports = async (req, res) => {
   try {
@@ -29,13 +23,11 @@ module.exports = async (req, res) => {
 
     if (galery) {
       for (let i = 0; i < galery.length; i++) {
-        await dropbox.move(
-          galery[i].path,
-          `/pulperia_v2/store/${register._id}/${parse(galery[i].path).base}`
-        );
-        galery[i].path = `/pulperia_v2/store/${register._id}/${
+        let newPath = `/pulperia_v2/store/${register._id}/${
           parse(galery[i].path).base
         }`;
+        await dropbox.move(galery[i].path, newPath);
+        galery[i].path = newPath;
       }
 
       register.pictures = galery;

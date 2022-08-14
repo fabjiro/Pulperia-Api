@@ -3,20 +3,28 @@ const router = require("express").Router();
 const validator = require("../../validator");
 const middleware = require("../../middleware");
 
+// get store of zone
+router.get(
+  ["/:latitude/:longitude/:radius", "/:latitude/:longitude/"],
+  middleware.auth,
+  validator.routes.store.get.zone,
+  controller.api.store.get.zone
+);
+
 // get info of store
-router.get("/", controller.api.store.all);
+router.get("/", controller.api.store.get.all);
 router.get(
   "/:_id",
   middleware.role(["admin", "owner"]),
   validator.routes.id,
-  controller.api.store.id
+  controller.api.store.get.id
 );
 // get owner store
 router.get(
   "/owner/:_id",
   middleware.auth,
   validator.routes.id,
-  controller.api.store.owner
+  controller.api.store.get.owner
 );
 //get inventory
 router.get(

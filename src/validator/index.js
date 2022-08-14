@@ -14,6 +14,7 @@ module.exports = {
     store: {
       push: require("./routes/store/push.validator"),
       create: require("./routes/store/create.validator"),
+      get: require("./routes/store/get.validator"),
     },
   },
 };

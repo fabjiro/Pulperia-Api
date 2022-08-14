@@ -1,7 +1,7 @@
 const { Store, User } = require("../../../models");
 
 /** @type {import("express").RequestHandler} */
-exports.all = async (req, res) => {
+const all = async (req, res) => {
   let registers = await Store.find().select([
     "-createdAt",
     "-updatedAt",
@@ -25,7 +25,7 @@ exports.all = async (req, res) => {
 };
 
 /** @type {import("express").RequestHandler} */
-exports.id = async (req, res) => {
+const id = async (req, res) => {
   let { _id } = req.params;
 
   let register = await Store.findById({ _id }).select([
@@ -50,7 +50,7 @@ exports.id = async (req, res) => {
 };
 
 /** @type {import("express").RequestHandler} */
-exports.owner = async (req, res) => {
+const owner = async (req, res) => {
   let { _id } = req.params;
   if (await User.exists({ _id })) {
     let register = await Store.find({ owner: _id }).select([
@@ -79,4 +79,45 @@ exports.owner = async (req, res) => {
     status: 403,
     smg: "owner not avalaible",
   });
+};
+
+/*
+{
+  location: {$near:{$geometry:{type: "Point", coordinates:[12.568608,-87.029474]},$maxDistance:100}}
+}
+*/
+
+/** @type {import("express").RequestHandler} */
+const zone = async (req, res) => {
+  let { latitude, longitude, radius } = req.params;
+
+  let registers = await Store.find({
+    location: {
+      $nearSphere: {
+        $geometry: { type: "Point", coordinates: [latitude, longitude] },
+        $maxDistance: radius || 400,
+      },
+    },
+  }).select(["-createdAt", "-updatedAt", "-pictures.path", "-pictures._id"]);
+
+  if (registers.length > 0) {
+    return res.status(200).json({
+      status: 200,
+      smg: "great",
+      data: registers,
+      length: registers.length,
+    });
+  }
+
+  return res.status(203).json({
+    status: 203,
+    smg: "in this zone store not avalaible",
+  });
+};
+
+module.exports = {
+  all,
+  id,
+  owner,
+  zone,
 };

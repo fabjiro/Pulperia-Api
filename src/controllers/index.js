@@ -25,10 +25,7 @@ module.exports = {
       update: require("./api/user/update"),
     },
     store: {
-      all: require("./api/store/list.controller").all,
-      id: require("./api/store/list.controller").id,
-      owner: require("./api/store/list.controller").owner,
-      categories: require("./api/store/list.controller").categories,
+      get: require("./api/store/list.controller"),
       create: require("./api/store/create.controller"),
       push: require("./api/store/push.controller"),
       pushcategorie: require("./api/store/push.controller").categorie,
