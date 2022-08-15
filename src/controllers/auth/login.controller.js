@@ -14,12 +14,14 @@ module.exports = async (req, res) => {
         smg: "grat :)",
         data: {
           token: tokenweb.generate(register),
+          email: email,
+          username: register.username,
         },
       });
     }
   }
   return res.status(200).json({
-    status: 204,
+    status: 203,
     smg: "user or password not valid",
   });
 };
