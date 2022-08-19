@@ -12,6 +12,7 @@ module.exports = mongoose.model(
           path: String,
         },
       },
+      creator: mongoose.Types.ObjectId,
     },
     {
       collection: "product",

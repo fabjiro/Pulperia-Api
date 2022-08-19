@@ -1,5 +1,5 @@
 const { Product, Categorie } = require("../../../models");
-const { dropbox, sharp } = require("../../../helpers");
+const { dropbox, sharp, tokenweb } = require("../../../helpers");
 const { unlinkSync } = require("fs");
 const SocketProductSend = require("../../socket/product.send");
 const state = require("../../state.controller");
@@ -7,6 +7,8 @@ const state = require("../../state.controller");
 /** @type {import("express").RequestHandler} */
 module.exports = async (req, res) => {
   const { categorie, name } = req.body;
+  let { authorization } = req.headers;
+
   const front = req.file;
   try {
     if (!(await Categorie.findById({ _id: categorie })))
@@ -34,6 +36,7 @@ module.exports = async (req, res) => {
           path: data_upload.path,
         },
       },
+      creator: tokenweb.verify(authorization.split(" ").pop())._id,
     });
 
     await register.save();

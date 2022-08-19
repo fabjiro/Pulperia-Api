@@ -21,8 +21,10 @@ router.get(
   "/:_id",
   middleware.auth,
   validator.routes.id,
-  controller.api.product.id
+  controller.api.product.get.id
 );
 
-router.get("/", controller.api.product.all);
+router.get("/find/:text", middleware.auth, controller.api.product.get.find);
+
+router.get("/", controller.api.product.get.all);
 module.exports = router;

@@ -11,8 +11,7 @@ module.exports = {
     product: {
       create: require("./api/product/create.controller"),
       delete: require("./api/product/delete.cotroller"),
-      all: require("./api/product/get.controller").all,
-      id: require("./api/product/get.controller").id,
+      get: require("./api/product/get.controller"),
     },
     states: {
       onChange: require("./state.controller").onChange,
